@@ -1,0 +1,3 @@
+# Compilation files, unneeded.
+zig-cache/
+zig-out/
