@@ -24,10 +24,14 @@ pub fn build(b: *std.Build) void {
         .optimize = optimize,
     });
 
-    const sdl_zig = b.addModule("SDL.zig", .{
+    const sdl_zig = b.addModule("sdl2", .{
         .source_file = .{ .path = "libs/SDL.zig/SDK.zig" }
     });
-    exe.addModule("SDL.zig", sdl_zig);
+
+    exe.addModule("sdl2", sdl_zig);
+    exe.linkSystemLibrary("SDL2");
+    exe.linkSystemLibrary("c");
+
 
     // This declares intent for the executable to be installed into the
     // standard location when the user invokes the "install" step (the default
