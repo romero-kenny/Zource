@@ -9,7 +9,6 @@ pub fn build(b: *std.Build) void {
     // means any target is allowed, and the default is native. Other options
     // for restricting supported target set are available.
     const target = b.standardTargetOptions(.{});
-
     // Standard optimization options allow the person running `zig build` to select
     // between Debug, ReleaseSafe, ReleaseFast, and ReleaseSmall. Here we do not
     // set a preferred release mode, allowing the user to decide how to optimize.
@@ -24,18 +23,13 @@ pub fn build(b: *std.Build) void {
         .optimize = optimize,
     });
 
-    const sdl_zig = b.addModule("sdl2", .{
-        .source_file = .{ .path = "libs/SDL.zig/SDK.zig" }
-    });
-
-    exe.addModule("sdl2", sdl_zig);
     exe.linkSystemLibrary("SDL2");
     exe.linkSystemLibrary("c");
-
 
     // This declares intent for the executable to be installed into the
     // standard location when the user invokes the "install" step (the default
     // step when running `zig build`).
+    b.default_step.dependOn(&exe.step);
     b.installArtifact(exe);
 
     // This *creates* a Run step in the build graph, to be executed when another
@@ -77,3 +71,4 @@ pub fn build(b: *std.Build) void {
     const test_step = b.step("test", "Run unit tests");
     test_step.dependOn(&run_unit_tests.step);
 }
+
